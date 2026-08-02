@@ -1,3 +1,11 @@
+"""
+I now installed all needed packages to run the program
+Two things to be aware of:
+1 - I used standard-imghdr since imghdr is not available anymore
+2 - I used scitools-pyke since pyke is not available anymore
+- N
+"""
+
 ########################################################################################################################
 print("###############################################################################################################")
 print("Setting up imports")
@@ -12,11 +20,6 @@ print("#########################################################################
 # !pip install google
 # !pip install google-api-python-client
 
-#I now installed all needed packages to run the program
-#Two things to be aware of:
-#1 - I used standard-imghdr since imghdr is not available anymore
-#2 - I used scitools-pyke since pyke is not available anymore
-
 # 1- Import modules
 ########## Loading Exiting libraries ##########
 ##https://www.tensorflow.org/api_docs/python/tf/keras/Sequential
@@ -24,14 +27,22 @@ import tensorflow as tf
 import numpy as np
 # Load Keras' ResNet50 model that was pre-trained against the ImageNet database
 
+#Installing tensorflow (used for building and training machine learning models) & numpy (used for large mathematical operations) -N
+
 ##oops##ImageRecognitionModel = tf.keras.applications.resnet50.ResNet50()
 
 import pandas as pd
 from pytz import unicode
 #######from sklearn.preprocessing import MinMaxScaler
 
+#Installing pandas (turns data into table-like structures) & pytz (brings in the OLSON/IANA timezone database, to deal with DST changes) -N
+
+
 #import os
 import shutil
+
+#Installing shutil (provides high-level file operations) -N
+
 
 #from __future__ import print_function
 from pathlib import Path
@@ -56,8 +67,16 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from pyke import knowledge_engine
-import sys
+import sys #Duplicate, can be removed
 import math
+
+#Installed a large series of libraries:
+#pathlib provides an objected-oriented way to work with filesystems
+#imghdr determines the type of image contained in a file or byte stream
+#random implements pseudo-random number generators for various distributions
+#this is an Easter egg that prints the Zen of Python, 19 guiding principles
+#sys is used for interactions with the python runtime environment and the host operating system before printing the directory path
+#inspect provides functions to look insde live python objects (introspection, looking at itself)
 
 
 #https://www.tensorflow.org/tutorials/images/classification
