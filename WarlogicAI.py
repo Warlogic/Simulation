@@ -12,7 +12,10 @@ print("#########################################################################
 # !pip install google
 # !pip install google-api-python-client
 
-#Test #2 is it still working? 2024-06-05
+#I now installed all needed packages to run the program
+#Two things to be aware of:
+#1 - I used standard-imghdr since imghdr is not available anymore
+#2 - I used scitools-pyke since pyke is not available anymore
 
 # 1- Import modules
 ########## Loading Exiting libraries ##########
