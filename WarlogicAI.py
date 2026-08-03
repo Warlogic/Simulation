@@ -61,13 +61,13 @@ from google.auth.transport.requests import Request
 import os
 import pickle
 import os.path
-from google.auth.transport.requests import Request
+from google.auth.transport.requests import Request #Duplicate
 from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow #Duplicate
+from googleapiclient.discovery import build #Duplicate
 from googleapiclient.errors import HttpError
 from pyke import knowledge_engine
-import sys #Duplicate, can be removed
+import sys #Duplicate
 import math
 
 #Installed a large series of libraries:
@@ -77,19 +77,33 @@ import math
 #this is an Easter egg that prints the Zen of Python, 19 guiding principles
 #sys is used for interactions with the python runtime environment and the host operating system before printing the directory path
 #inspect provides functions to look insde live python objects (introspection, looking at itself)
+#re is used to search, extract, split, and manipulate text based on specific character patterns
+#datetime provides classes for manipulating dates and times
+#googleapiclient is used to access Google APIs
+#The build imports the core functions of the Google API client library, like Drive, YT, Sheets, etc.
+#InstalledAppFlow is used to handle the OAuth 2.0 authorization flow for installed applications, whereas flow is a parent class
+#Request is a helper class
+#os provides functions to interact with the operating system
+#os.path provides functions to manipulate file paths
+#pickle is used to serialize and deserialize Python objects, meaning taking complex Python objects and converting them into a byte stream that can be saved locally
+#Credentials is used to load and manipulate OAuth 2.0 credentials
+#HttpError is used to handle errors that occur when making HTTP requests to Google APIs
+#knowledge_engine is used to compose AI frameworks and intelligence systems
 
 
 #https://www.tensorflow.org/tutorials/images/classification
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt #matplotlib is a data visualization library
 ##import numpy as np
 #pip install pillow
-import PIL
+import PIL #Pillow is a library for opening and manipulating images
 ##import tensorflow as tf
 
 ##oops##from tensorflow import keras
 ##oops##from tensorflow.keras import layers
 ##oops##from tensorflow.keras.models import Sequential
 import pathlib
+#pathlib provides an object-oriented way to work with filesystems
+
 
 ########################################################################################################################
 print("###############################################################################################################")
@@ -97,6 +111,8 @@ print("Setting up global functions")
 print("###############################################################################################################")
 ########################################################################################################################
 ### usage function
+
+#Are there no global functions yet? Is the usage function supposed to be added here? -N
 
 ########################################################################################################################
 print("###############################################################################################################")
@@ -111,10 +127,13 @@ else:
     dataset_url = "https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz"
     data_dir = tf.keras.utils.get_file('flower_photos.tar', origin=dataset_url, extract=True)
 
+#Here we are skipping the the sample files as we're probably going to pull from a local library of images -N
+
 data_dir = "C:\\Users\\khaxa\\Desktop\\Ex_Files_Building_Deep_Learning_Apps\\Exercise Files\\03\\images"
 data_dir = pathlib.Path(data_dir).with_suffix('')
 #"C:\\Users\\khaxa\\Desktop\\Ex_Files_Building_Deep_Learning_Apps\\Exercise Files\\03\\images" #
 
+#Here we can actually see the current image we're using for testing -N
 
 
 # 3- Golbal variables
@@ -251,6 +270,10 @@ dictionary = [{'model_name': 'WarLogic Family',
                }
               ]
 
+#From what I can tell, this dictonary contains a list of items that are all to be trained to complete specific tasks
+#Specifically, find out relationships between archetypes, identify images, and create and evaluate new generations of skill and default values
+#Alongside reading images to determine the archetype, vendor, universe, and character of an action figure -N
+
 AllSkills = []
 AllCompanies = []
 AllArchtypes = ['Elephant health', 'Horse Health', 'Camel Health', 'wildcat Health', 'Bear Health', 'Dog Health',
@@ -267,6 +290,9 @@ AllArchtypes = ['Elephant health', 'Horse Health', 'Camel Health', 'wildcat Heal
                 'robot health', 'Mermaid health', 'Droid health', 'Elf health', 'Storage box', 'Building health',
                 'Cottage Durability 640', 'landing pad Durability', 'Bunker Durability 2560', 'Castle Durability 5120',
                 'Bridge durability', 'Landing runway duribility', 'Unidentified health']
+
+#The following list contains the "archtypes", which seem to be all the different types of units that can be used in the game -N
+#Slight inconsistences? Perhaps all vehicles should be listed as "durability" instead of "health" -N
 
 #icons and symbols dictionary
 name_symbol_dictionary = {
@@ -322,6 +348,8 @@ name_symbol_dictionary = {
     # 'reserved':''',
 }
 
+#This dictionary turns each of the following terms into a symbol for easy referral 
+
 
 ########################################################################################################################
 print("###############################################################################################################")
@@ -333,11 +361,14 @@ print("#########################################################################
 ################################################### Unit ##############################################################
 class Unit:
     _UnitClass = "Unit class. a unit is any individual soldier, vehicle, building, or actor of any kind"
+    #Creating the class variable and defining what it's supposed to represent
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs): #Constructor method, contains args for unamed arguments and kwargs for named arguments
         print("==================================================================\n")
         self.companyFile = kwargs.get('companyFile')
+        #Simply getting the name of the company
         self.name = kwargs.get('name')  if kwargs.get('name') is not None else "No_Name"
+        #Also simply getting the name of the unit, but if there is no name, it will default to "No_Name"
         self.number = kwargs.get('')
         self.loreURL = kwargs.get('')
         self.imageURL = kwargs.get('')
@@ -353,10 +384,12 @@ class Unit:
         self.Unit = kwargs.get('')
         self.enabled = kwargs.get('')
         self.SkillReferences = kwargs.get('')
+        #The rest of the variables here seem UNFINISHED as they only result in empty strings
         self.image_destination = 'images\\' + '_'  + str(self.number) + '_' + str(self.name) + '.jpg'
+        #This line here is creating a name for the image that will be downloaded, combining both the number and name of the unit to ensure each unit item is classified uniquely
 
 
-    def downloadImage(self, _identityArray, _uniqueFileName):
+    def downloadImage(self, _identityArray, _uniqueFileName): #This function has the goal of downloading an image from the internet and save it
         #
         #anaconda
         #conda activate py37
@@ -364,6 +397,8 @@ class Unit:
         #https://stackoverflow.com/questions/30229231/python-save-image-from-url
         import requests
         img_data = requests.get(self.imageURL).content
+        #The requests library is used to get images off the internet
+        #From there it grabs the stored URL and searches for it online alongside the raw bytes of the image
         for race in _identityArray:
             strippedname = str(self.name).rstrip()  # some manual name inputs might have \r\n in them which breaks the file name while writing to desk.
             image_destination = 'images\\'+self.number+'_'+str(_uniqueFileName)+'_'+strippedname+'___'+str(race)+'___.jpg'
