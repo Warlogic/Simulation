@@ -407,6 +407,9 @@ class Unit:
             with open(image_destination, 'wb') as handler:
                 handler.write(img_data)
 
+#The loop then goes through the identity array and starts by stripping the name of excess whitespace so it can be clearly used as the image filename
+#From there we turn the filename and turn it into binary (wb) and write the image data to the file -N
+
     def identifyImage(self):
         # Load the image file, resizing it to 224x224 pixels (required by this model)
         # img = image.load_img("bay.jpg", target_size=(224, 224))
@@ -414,12 +417,15 @@ class Unit:
         # img = tf.keras.preprocessing.image.load_img("bay.jpg", target_size=(224, 224))
         image_destination = 'images\\' + self.number + '_' + self.name + '.jpg'
         img = tf.keras.preprocessing.image.load_img(image_destination, target_size=(224, 224))
+        #Once again we are creating the filename for the image before loading a 224 x 244 pixel version of the image so it can be used by ResNet50 -N
 
         # Convert the image to a numpy array
         imgArray = tf.keras.preprocessing.image.img_to_array(img)
+        #In order for the image to be properly understood by the model, we turn each pixel into an RGB array -N
 
         # Add a forth dimension since Keras expects a list of images
         imgArray = np.expand_dims(imgArray, axis=0)
+        #We add another dimension because we're going to input a batch of images, not just one -N
 
         # Scale the input image to the range used in the trained network
         # x = resnet50.preprocess_input(x)
@@ -429,20 +435,25 @@ class Unit:
         # https://github.com/ovh/ai-training-examples/blob/main/notebooks/computer-vision/image-classification/tensorflow/resnet50/notebook-resnet-transfer-learning-image-classification.ipynb
         # tensorflow.keras.applications.resnet50 import preprocess_input
         imgArray = tf.keras.applications.resnet50.preprocess_input(imgArray)
+        #Here we adjust the values to be put in a format that ResNet50 can understand -N
 
         # Run the image through the deep neural network to make a prediction
         # predictions = model.predict(x)
         predictions3 = ImageRecognitionModel.predict(imgArray)
+        #This line is supposed to be the forward propagation of the image through a neural network called ImageRecognitionModel -N
 
         # Look up the names of the predicted classes. Index zero is the results for the first image.
         # predicted_classes = resnet50.decode_predictions(predictions, top=9)
         # https://www.tensorflow.org/api_docs/python/tf/keras/applications/resnet50/decode_predictions
         predicted_classes = tf.keras.applications.resnet50.decode_predictions(predictions3, top=10)
+        #The neural network will then produce many numerical probabilities and provide the top 10 most likely classes for the image -N
 
         print("This is an image of:")
 
         for imagenet_id, name, likelihood in predicted_classes[0]:
             print(" - {}: {:2f} likelihood".format(name, likelihood))
+
+        #Here we print out what the predicted classes are and their likelihoods -N
 
 
 
@@ -493,19 +504,25 @@ class Skill:
         self.reach = kwargs.get('reach') if kwargs.get('reach') is not None else 1.00
         self.expansion = kwargs.get('expansion') if kwargs.get('expansion') is not None else 1.00
         self.effectiveness = None
-        self.calculateCost()
-        self.attrs = vars(self)
+        self.calculateCost() #Is defined later on
+        self.attrs = vars(self) #This is taking all the variables currently defined in the skill, like a summary
+
+        #This is very similar to what we saw in the unit class, but actually finished,
+        #Once again using args and kwargs for unamed and named arguments,
+        #After that we are simply telling the constructor to assign everything to the corresponding variable
+        #With that said, in the case that the user did not define any value for the variables, there will be some defualt assignment -N
 
         print("Skill addition: Cost is ", self.cost)
 
     def getProbability(self):
         # https://note.nkmk.me/en/python-type-isinstance/
         if type(self.number) is str:
-            self.number = 20
+            self.number = 20 #Setting the default number to 20 if the user inputs a string instead of an integer -N
         print("Skill addition: #", self.number)
-        num = 1
-        num = int(self.number)
-        if num == None or self.number == 0:
+        num = 1 #Why?
+        num = int(self.number) #In the case that the user inputs a decimal value, it is converted into an integer
+        if num == None or self.number == 0: #num should never become none, it never yields that value,
+            #otherwise if the self.number is 0, it will be set to 1 - N
             # or self.number < 1:
             self.number = 1
         elif num >= 20:
@@ -515,24 +532,26 @@ class Skill:
         else:
             self.number = 20
 
+        #The rest of the lines here are simply trying to keep the number between 1 and 20 -N
+
         if self.subcategory == None and self.category == None:
             print("Skill addition: We do not know either yet so we will go with 100%")
-            return 1.00
+            return 1.00 #As the print statement implies, if we don't know the category or subcategory, we will return 100% probability -N
         elif self.subcategory == None and self.category != None:
             print("Skill addition: We only know the category, look it up")
-            prop = categoryDicionary(self.category)
+            prop = categoryDicionary(self.category) #If we know the category, we will look it up in the category dictionary
             if prop == None:
                 print("Skill addition: if you cannot find the category, return 1.00")
-                return 1.00
+                return 1.00 #If the category is not found in the dictonary, we will return 100% probability -N
             elif prop != None:
                 print("Skill addition: if you can find the category, return it in float")
-                return float(prop)
+                return float(prop) #If the category is found, it will return a float -N
             else:
                 print("Skill addition: anything else, return 1.00")
-                return 1.00
+                return 1.00 #Not too sure when this would happen since the previous cases are binary, nonetheless we return 100% here as well -N
         else:
             print("Skill addition: anything else, return 1.00")
-            return 1.00
+            return 1.00 #If there is both a subcategory and a category return 100% -N
 
     def calculateCost(self):
         self.probability = self.getProbability()
@@ -542,15 +561,15 @@ class Skill:
             print("Skill addition: penalty.............", self.penalty)
         power = 1
         try:  # try to do this
-            power = name_symbol_dictionary['RnD']
+            power = name_symbol_dictionary['RnD'] #We initially set the power to 1 before trying to search up RnD in the dictionary -N
             if False:
                 print("Skill addition: RnD power is: ", power)
         except NameError:  # if you get this error show this message
             print("Skill addition: Could not look up RnD power..")
-            power = 0
+            power = 0 #In the case of a NameError we set power to 0 -N
         except:  # if you any other error print this message
             print("Skill addition: Undefined exception trying to lookup RnD power")
-            power = 0
+            power = 0 #Same thing here, except for any other error, we're simply trying to differentiate the two -N
         else:  # if you dont get any errors, do something dependant on the previous task
             if False:
                 print("Skill addition: No reported errors while trying to look up RnD power")
