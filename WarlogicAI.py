@@ -575,34 +575,38 @@ class Skill:
                 print("Skill addition: No reported errors while trying to look up RnD power")
             self.cost = ( float(self.impact) + float(self.reach) + float(self.expansion)) * (float(self.probability) * float(self.number)) + float(self.penalty)
             #float(self.penalty) +
+            #In the case that the try statement is successful, we then are able to calculate for cost -N
 
             print("Skill addition: Cost of new skill ", self.name, " is ", self.cost, "$")
         finally:  # and in all cases do the following
             if self.cost == None:
                 self.cost = 1000000
         return self.cost
+    #In the case that the self.cost has no value, automatically set it to 1 million -N
 
     def showSkillAttributes(self):
         try:
-            record = ', '.join("%s: %s" % item for item in self.attrs.items())
+            record = ', '.join("%s: %s" % item for item in self.attrs.items()) #This line is taking all the attributes held in the dictionary and turning it into a string -N
             if False:
                 print("Skill addition: Record: ", record  )
         except:
             if False:
                 print("Skill addition: something happened")
 
+                #If I had to guess, for the sake of debugging or saving time the print statement was done to never print -N
+
 
 #############################################Database retriever ########################################################
 class GoogleRetriever():
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs): #Once again our constructor contains self, args, and kwargs
         print("==================================================================")
-        self.scope = [kwargs.get('scope')] if kwargs.get('scope') is not None else ['https://www.googleapis.com/auth/spreadsheets.readonly']
-        self.file = kwargs.get('file') if kwargs.get('file') is not None else "1ArmVkHAETavtG2G4RJOVtD0O7aHcD-Mw5_hnf3zDPdw"
-        self.cellrange = kwargs.get('cellrange') if kwargs.get('cellrange') is not None else 'Skills!A2:O990'
-        self.secret = kwargs.get('secret') if kwargs.get('secret') is not None else 'client_secret_438937642705-hee3p5cnh2eq4t4fnc30kco72igikpg6.apps.googleusercontent.com.json'
-        self.values = []
-        self.rows = kwargs.get('rows') if kwargs.get('rows') is not None else '1191'
-        self.identityArray = []
+        self.scope = [kwargs.get('scope')] if kwargs.get('scope') is not None else ['https://www.googleapis.com/auth/spreadsheets.readonly'] #If the user gave me a scope, I will use it, otherwise I will use the default scope -N
+        self.file = kwargs.get('file') if kwargs.get('file') is not None else "1ArmVkHAETavtG2G4RJOVtD0O7aHcD-Mw5_hnf3zDPdw" #If the user provided a file, use that, otherwise use the default file -N
+        self.cellrange = kwargs.get('cellrange') if kwargs.get('cellrange') is not None else 'Skills!A2:O990' #If cell range isn't defined by the user, use default -N 
+        self.secret = kwargs.get('secret') if kwargs.get('secret') is not None else '' #Same thing here, secret file is removed -N
+        self.values = [] #Create an empty array
+        self.rows = kwargs.get('rows') if kwargs.get('rows') is not None else '1191' #Same idea here
+        self.identityArray = [] #Another empty array
 
     # 4- Define retriever
     def retrieve(self):
@@ -612,7 +616,7 @@ class GoogleRetriever():
 
         # 3- Connect to data stores, databases, files
         # If modifying these scopes, delete the file token.json.
-        SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+        SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'] #This variable is containing a string which would allow the function to read Google Sheets -N
         # SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         # The ID and range of a sample spreadsheet.
         #SAMPLE_SPREADSHEET_ID = "1ArmVkHAETavtG2G4RJOVtD0O7aHcD-Mw5_hnf3zDPdw"
